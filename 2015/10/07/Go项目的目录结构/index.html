@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Go项目的目录结构 | 淡淡</title>
+  <meta name="author" content="ZFLiu">
+  
+  <meta name="description" content="Hack情怀的小学生">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Go项目的目录结构"/>
+  <meta property="og:site_name" content="淡淡"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="淡淡" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <meta name="wumiiVerification" content="fb50a101-84fe-4ca2-91a7-ae8cf792978b" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <header id="header" class="inner"><div class= "header-content">
+	<div class = "alignleft col-one">
+		
+			<img src = "/assets/img/avatar/avatar.jpg">
+		
+		<div class="header-div">
+		    <h1><a href="/">淡淡</a></h1>
+		    <h2><a href="/"></a></h2>
+		</div>
+	</div>
+	<div class = "alignright col-two">
+		
+			<img src = "/assets/img/avatar/hello.jpg">
+		
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<div class= "header-nav">
+	<div id="main-nav" class="alignleft">
+	    
+	      <a href="/">首页</a>
+	    
+	      <a href="/collection">文集</a>
+	    
+	      <a href="/gallery">图集</a>
+	    
+	      <a href="/archives">归档</a>
+	    
+	</div>
+	<div id="sub-nav" class="alignright">
+	    
+	      <a href="/atom.xml">订阅RSS</a>
+	    
+	      <a href="/customization">自定义</a>
+	    
+	      <a href="/resume">个人简历</a>
+	    
+	</div>
+	<div class="clearfix"></div>
+</div>
+</header>
+  
+      <div id="content" class="inner">
+  		<div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+        <div class="icon"></div>
+        <time datetime="2015-10-07T10:30:36.000Z"><a href="/2015/10/07/Go项目的目录结构/">2015-10-07</a></time>
+        
+  
+    <h1 class="title">Go项目的目录结构</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <div id="toc" class="toc-article">
+	<div class="toc-title">目录</div>
+	<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Golang项目目录结构组织"><span class="toc-text">Golang项目目录结构组织</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-_准备工作"><span class="toc-text">1. 准备工作</span></a></li></ol></li></ol>
+</div>
+      
+        <h1 id="Golang项目目录结构组织">Golang项目目录结构组织</h1><hr>
+<p>一直搞不懂golang是怎么组织项目目录结构的，后来看了<a href="http://www.cnblogs.com/wlts/archive/2013/06/01/3112004.html" target="_blank" rel="external">Golang项目目录结构组织</a>总算弄明白一些了。整体来说，golang使用<strong>目录+包</strong>来管理的，比起python来说确实麻烦一些。具体往后看，本文基于上面的连接进行总结。</p>
+<h2 id="1-_准备工作">1. 准备工作</h2><p>首先，需要设置一个环境变量GOPATH，简单地说，<figure class="highlight"><figcaption><span>get```得到的包也都是安装在这里面。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#19968;&#20010;GOPATH&#19968;&#33324;&#26377;3&#20010;&#23376;&#30446;&#24405;:&#10;    &#62;* src (&#23384;&#25918;&#28304;&#30721;&#65292;**&#26368;&#37325;&#35201;&#30340;**)&#10;    &#62;* pkg (&#23384;&#25918;&#32534;&#35793;&#21518;&#30340;&#20195;&#30721;)&#10;    &#62;* bin (&#23384;&#25918;&#21464;&#24322;&#21518;&#30340;&#21487;&#25191;&#34892;&#25991;&#20214;)&#10;&#10;&#19968;&#33324;&#26469;&#35828;pkg&#21644;bin&#30446;&#24405;&#19981;&#29992;&#25105;&#20204;&#21019;&#24314;&#65292;```go build &#25110;&#32773; go install```&#30340;&#26102;&#20505;&#23601;&#20250;&#33258;&#24049;&#21019;&#24314;&#20102;&#65292;golang&#30340;&#23433;&#35013;&#30446;&#24405;&#23601;&#26159;&#19968;&#20010;GOPATH&#65292;&#36825;&#37324;&#25105;&#20204;&#28155;&#21152;&#19968;&#20010;&#36335;&#24452;&#21040;GOPATH&#65292;&#36825;&#37324;&#24341;&#29992;&#21407;&#25991;&#30340;&#20363;&#23376;,&#36825;&#26159;&#10;&#10;## 2. &#26032;&#24314;&#39033;&#30446;&#10;``` &#10;&#60;proj&#62;&#10;  |--&#60;src&#62;&#10;       |--&#60;a&#62;&#10;           |--&#60;a1&#62;&#10;                |--al.go&#10;           |--&#60;a2&#62;&#10;                |--a2.go&#10;       |--&#60;b&#62;&#10;           |--b1.go&#10;           |--b2.go&#10;       |--&#60;c&#62;&#10;           |--c.go&#10;  |--&#60;pkg&#62;&#10;  |--&#60;bin&#62;</span><br></pre></td></tr></table></figure></p>
+<p>各文件代码:<br><strong>a1.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> a1</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> PrintA1() &#123;</span><br><span class="line">	fmt.Println(<span class="string">"a/a1"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>a2.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> a2</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> PrintA2() &#123;</span><br><span class="line">	fmt.Println(<span class="string">"a/a2"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>b1.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> b</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> printB1() &#123;</span><br><span class="line">	fmt.Println(<span class="string">"b.b1"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>b2.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> b</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> PrintB() &#123;</span><br><span class="line">	printB1()</span><br><span class="line">	fmt.Println(<span class="string">"b.b2"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>c.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"a/a1"</span></span><br><span class="line">	<span class="string">"a/a2"</span></span><br><span class="line">	<span class="string">"b"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> main() &#123;</span><br><span class="line">	a1.PrintA1()</span><br><span class="line">	a2.PrintA2()</span><br><span class="line">	b.PrintB()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后在c.go的目录下<figure class="highlight go"><figcaption><span>run c.go```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**结果：**</span><br></pre></td></tr></table></figure></p>
+<p>a/a1<br>a/a2<br>b.b1<br>b.b2<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">若执行<span class="escape">``</span><span class="escape">`g</span>o install c<span class="escape">``</span><span class="escape">`则</span>将会同时生成pkg目录和bin目录，且可执行文件在bin目录里面。</span><br><span class="line">## <span class="number">3</span>. 总结</span><br><span class="line"><span class="label">golang的项目目录组织结构说起来其实就两个细节:</span></span><br><span class="line"><span class="escape">``</span><span class="escape">`i</span>mport<span class="escape">``</span><span class="escape">` </span>的是目录，从GOPATH里面**src目录**开始的目录</span><br><span class="line"><span class="escape">``</span><span class="escape">`p</span>ackage<span class="escape">``</span><span class="escape">` </span>是给函数调用的。</span><br><span class="line">比如<span class="escape">``</span><span class="escape">`c</span>.go<span class="escape">``</span><span class="escape">` </span>里面，<span class="escape">``</span><span class="escape">`i</span>mport <span class="string">"a/a1"</span><span class="escape">``</span><span class="escape">` </span>指的是<span class="escape">``</span><span class="escape">`G</span>OPATH/scr/<span class="literal">a</span>/a1<span class="escape">``</span><span class="escape">` </span>目录,而<span class="escape">``</span><span class="escape">`c</span>.go<span class="escape">``</span><span class="escape">`里</span>面的<span class="escape">``</span><span class="escape">`a</span>1.PrintA1()<span class="escape">``</span><span class="escape">` </span>中的a1是<span class="escape">``</span><span class="escape">`a</span>1.go<span class="escape">``</span><span class="escape">` </span>里面的<span class="escape">``</span><span class="escape">`p</span>ackae a1<span class="escape">``</span><span class="escape">`，</span>比如说:</span><br><span class="line">如果 <span class="escape">``</span><span class="escape">`a</span>1.go<span class="escape">``</span><span class="escape">` </span>的路径变成 <span class="escape">``</span><span class="escape">`a</span>/a11<span class="escape">``</span><span class="escape">`，</span><span class="escape">``</span><span class="escape">`a</span>1.go<span class="escape">``</span><span class="escape">` </span>里面改成 <span class="escape">``</span><span class="escape">`p</span>ackage aaa<span class="escape">``</span><span class="escape">` </span>,那么 <span class="escape">``</span><span class="escape">`c</span>.go<span class="escape">``</span><span class="escape">` </span>就变成了：</span><br></pre></td></tr></table></figure></p>
+<p>package main</p>
+<p>import (<br>    “a/a11”<br>    “a/a2”<br>    “b”<br>)</p>
+<p>func main() {<br>    aaa.PrintA1()<br>    a2.PrintA2()<br>    b.PrintB()<br>}<br><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="preprocessor">## 4. 补充(据说不推荐)</span></span><br><span class="line"><span class="title">golang</span>的<span class="import"><span class="keyword">import</span>是可以不依赖GOPATH的，但是据说是不推荐的作法。</span></span><br><span class="line">``` </span><br><span class="line">  |<span class="comment">--&lt;a&gt;</span></span><br><span class="line">       |<span class="comment">--a.go</span></span><br><span class="line">  |<span class="comment">--main.go</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>a.go:</strong><br><figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">package a</span><br><span class="line"></span><br><span class="line"><span class="built_in">import</span> <span class="params">(</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span></span><br><span class="line"></span><br><span class="line">func PrintA<span class="params">()</span> &#123;</span><br><span class="line">	fmt.Println<span class="params">(<span class="string">"aaa"</span>)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>main.go:</strong><br><figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="built_in">import</span> <span class="params">(</span><br><span class="line">	<span class="string">"./a"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span></span><br><span class="line"></span><br><span class="line">func main<span class="params">()</span> &#123;</span><br><span class="line">	a.PrintA<span class="params">()</span></span><br><span class="line">	fmt.Println<span class="params">(<span class="string">"main"</span>)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>结果：</strong><br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">aaa</span></span><br><span class="line">main</span><br></pre></td></tr></table></figure></p>
+<p>可见，golang也是支持相对引入的</p>
+
+      
+    </div>
+    <footer>
+<!--        -->
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/golang/">golang</a>
+  </div>
+
+        
+  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+  <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<!--        -->
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+<!--   <h1 class="title">留言</h1> -->
+
+
+    <!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="2015/10/07/Go项目的目录结构/" data-title="Go项目的目录结构" data-url="http://yoursite.com/2015/10/07/Go项目的目录结构/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"pengloo53"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+
+  
+</section>
+
+
+
+</div></div>
+  		<aside id="sidebar" class="alignright">
+   
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">归档</h3>
+	<ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">2015年10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">2015年07月</a><span class="archive-list-count">1</span></li></ul>
+  </div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">標籤雲</h3>
+  <div class="entry">
+    <a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget">
+    <h3 class="title">我的微博</h3>
+      <ul class="weibo">
+	<iframe width="100%" height="800" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=800&amp;fansRow=1&amp;ptype=1&amp;speed=0&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1934606495&amp;verifier=a6769878&amp;dpc=1"></iframe>
+      </ul>
+  </div>
+
+</aside>
+           <div class="clearfix"></div>
+      </div>
+  	
+   <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 ZFLiu
+  
+</div>
+<div class="alignright">
+	<a href="https://github.com/pengloo53/light-ch">Hexo theme</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?dce613887849d114b64d37be797bf201";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+<div id="toTop">
+	<a href="#">▲</a>
+	<a href="#footer">▼</a>
+</div>
+<!--  -->
+
+
+</body>
+</html>
