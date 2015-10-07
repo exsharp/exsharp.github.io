@@ -212,19 +212,41 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Golang项目目录结构组织">Golang项目目录结构组织</h1><hr>
-<p>一直搞不懂golang是怎么组织项目目录结构的，后来看了<a href="http://www.cnblogs.com/wlts/archive/2013/06/01/3112004.html" target="_blank" rel="external">Golang项目目录结构组织</a>总算弄明白一些了。整体来说，golang使用<strong>目录+包</strong>来管理的，比起python来说确实麻烦一些。具体往后看，本文基于上面的连接进行总结。</p>
-<h2 id="1-_准备工作">1. 准备工作</h2><p>首先，需要设置一个环境变量GOPATH，简单地说，<figure class="highlight"><figcaption><span>get```得到的包也都是安装在这里面。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#19968;&#20010;GOPATH&#19968;&#33324;&#26377;3&#20010;&#23376;&#30446;&#24405;:&#10;    &#62;* src (&#23384;&#25918;&#28304;&#30721;&#65292;**&#26368;&#37325;&#35201;&#30340;**)&#10;    &#62;* pkg (&#23384;&#25918;&#32534;&#35793;&#21518;&#30340;&#20195;&#30721;)&#10;    &#62;* bin (&#23384;&#25918;&#21464;&#24322;&#21518;&#30340;&#21487;&#25191;&#34892;&#25991;&#20214;)&#10;&#10;&#19968;&#33324;&#26469;&#35828;pkg&#21644;bin&#30446;&#24405;&#19981;&#29992;&#25105;&#20204;&#21019;&#24314;&#65292;```go build &#25110;&#32773; go install```&#30340;&#26102;&#20505;&#23601;&#20250;&#33258;&#24049;&#21019;&#24314;&#20102;&#65292;golang&#30340;&#23433;&#35013;&#30446;&#24405;&#23601;&#26159;&#19968;&#20010;GOPATH&#65292;&#36825;&#37324;&#25105;&#20204;&#28155;&#21152;&#19968;&#20010;&#36335;&#24452;&#21040;GOPATH&#65292;&#36825;&#37324;&#24341;&#29992;&#21407;&#25991;&#30340;&#20363;&#23376;,&#36825;&#26159;&#10;&#10;## 2. &#26032;&#24314;&#39033;&#30446;&#10;``` &#10;&#60;proj&#62;&#10;  |--&#60;src&#62;&#10;       |--&#60;a&#62;&#10;           |--&#60;a1&#62;&#10;                |--al.go&#10;           |--&#60;a2&#62;&#10;                |--a2.go&#10;       |--&#60;b&#62;&#10;           |--b1.go&#10;           |--b2.go&#10;       |--&#60;c&#62;&#10;           |--c.go&#10;  |--&#60;pkg&#62;&#10;  |--&#60;bin&#62;</span><br></pre></td></tr></table></figure></p>
-<p>各文件代码:<br><strong>a1.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> a1</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> PrintA1() &#123;</span><br><span class="line">	fmt.Println(<span class="string">"a/a1"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>一直搞不懂golang是怎么组织项目目录结构的，后来看了<a href="http://www.cnblogs.com/wlts/archive/2013/06/01/3112004.html" target="_blank" rel="external">Golang项目目录结构组织</a>总算弄明白一些了。整体来说，golang使用<strong>目录+包</strong>来管理的，比起python来说确实麻烦一些。具体往后看，本文基于上面的连接进行总结。</p>
+<h2 id="1-_准备工作">1. 准备工作</h2><p>首先，需要设置一个环境变量GOPATH，简单地说，<strong>import</strong>的包都在这个变量里面找，包括<strong>go get</strong>得到的包也都是安装在这里面。</p>
+<p>一个GOPATH一般有3个子目录:</p>
+<pre><code><span class="function"><span class="title">src</span> <span class="params">(存放源码，最重要的)</span>
+<span class="title">pkg</span> <span class="params">(存放编译后的代码)</span>
+<span class="title">bin</span> <span class="params">(存放变异后的可执行文件)</span></span>
+</code></pre><p>一般来说pkg和bin目录不用我们创建，<strong>go build 或者 go install</strong>的时候就会自己创建了，golang的安装目录就是一个GOPATH，这里我们添加一个路径到GOPATH，这里引用原文的例子,这是</p>
+<h2 id="2-_新建项目">2. 新建项目</h2><pre><code>&lt;proj&gt;
+  |<span class="comment">--&lt;src&gt;</span>
+       |<span class="comment">--&lt;a&gt;</span>
+           |<span class="comment">--&lt;a1&gt;</span>
+                |<span class="comment">--al.go</span>
+           |<span class="comment">--&lt;a2&gt;</span>
+                |<span class="comment">--a2.go</span>
+       |<span class="comment">--&lt;b&gt;</span>
+           |<span class="comment">--b1.go</span>
+           |<span class="comment">--b2.go</span>
+       |<span class="comment">--&lt;c&gt;</span>
+           |<span class="comment">--c.go</span>
+  |<span class="comment">--&lt;pkg&gt;</span>
+  |<span class="comment">--&lt;bin&gt;</span>
+</code></pre><p>各文件代码:<br><strong>a1.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> a1</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> PrintA1() &#123;</span><br><span class="line">	fmt.Println(<span class="string">"a/a1"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>a2.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> a2</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> PrintA2() &#123;</span><br><span class="line">	fmt.Println(<span class="string">"a/a2"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>b1.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> b</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> printB1() &#123;</span><br><span class="line">	fmt.Println(<span class="string">"b.b1"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>b2.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> b</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> PrintB() &#123;</span><br><span class="line">	printB1()</span><br><span class="line">	fmt.Println(<span class="string">"b.b2"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>c.go:</strong><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"a/a1"</span></span><br><span class="line">	<span class="string">"a/a2"</span></span><br><span class="line">	<span class="string">"b"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> main() &#123;</span><br><span class="line">	a1.PrintA1()</span><br><span class="line">	a2.PrintA2()</span><br><span class="line">	b.PrintB()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最后在c.go的目录下<figure class="highlight go"><figcaption><span>run c.go```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**结果：**</span><br></pre></td></tr></table></figure></p>
-<p>a/a1<br>a/a2<br>b.b1<br>b.b2<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">若执行<span class="escape">``</span><span class="escape">`g</span>o install c<span class="escape">``</span><span class="escape">`则</span>将会同时生成pkg目录和bin目录，且可执行文件在bin目录里面。</span><br><span class="line">## <span class="number">3</span>. 总结</span><br><span class="line"><span class="label">golang的项目目录组织结构说起来其实就两个细节:</span></span><br><span class="line"><span class="escape">``</span><span class="escape">`i</span>mport<span class="escape">``</span><span class="escape">` </span>的是目录，从GOPATH里面**src目录**开始的目录</span><br><span class="line"><span class="escape">``</span><span class="escape">`p</span>ackage<span class="escape">``</span><span class="escape">` </span>是给函数调用的。</span><br><span class="line">比如<span class="escape">``</span><span class="escape">`c</span>.go<span class="escape">``</span><span class="escape">` </span>里面，<span class="escape">``</span><span class="escape">`i</span>mport <span class="string">"a/a1"</span><span class="escape">``</span><span class="escape">` </span>指的是<span class="escape">``</span><span class="escape">`G</span>OPATH/scr/<span class="literal">a</span>/a1<span class="escape">``</span><span class="escape">` </span>目录,而<span class="escape">``</span><span class="escape">`c</span>.go<span class="escape">``</span><span class="escape">`里</span>面的<span class="escape">``</span><span class="escape">`a</span>1.PrintA1()<span class="escape">``</span><span class="escape">` </span>中的a1是<span class="escape">``</span><span class="escape">`a</span>1.go<span class="escape">``</span><span class="escape">` </span>里面的<span class="escape">``</span><span class="escape">`p</span>ackae a1<span class="escape">``</span><span class="escape">`，</span>比如说:</span><br><span class="line">如果 <span class="escape">``</span><span class="escape">`a</span>1.go<span class="escape">``</span><span class="escape">` </span>的路径变成 <span class="escape">``</span><span class="escape">`a</span>/a11<span class="escape">``</span><span class="escape">`，</span><span class="escape">``</span><span class="escape">`a</span>1.go<span class="escape">``</span><span class="escape">` </span>里面改成 <span class="escape">``</span><span class="escape">`p</span>ackage aaa<span class="escape">``</span><span class="escape">` </span>,那么 <span class="escape">``</span><span class="escape">`c</span>.go<span class="escape">``</span><span class="escape">` </span>就变成了：</span><br></pre></td></tr></table></figure></p>
-<p>package main</p>
-<p>import (<br>    “a/a11”<br>    “a/a2”<br>    “b”<br>)</p>
-<p>func main() {<br>    aaa.PrintA1()<br>    a2.PrintA2()<br>    b.PrintB()<br>}<br><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="preprocessor">## 4. 补充(据说不推荐)</span></span><br><span class="line"><span class="title">golang</span>的<span class="import"><span class="keyword">import</span>是可以不依赖GOPATH的，但是据说是不推荐的作法。</span></span><br><span class="line">``` </span><br><span class="line">  |<span class="comment">--&lt;a&gt;</span></span><br><span class="line">       |<span class="comment">--a.go</span></span><br><span class="line">  |<span class="comment">--main.go</span></span><br></pre></td></tr></table></figure></p>
+<p>最后在c.go的目录下<strong>go run c.go</strong><br><strong>结果：</strong></p>
+<pre><code>a/a1
+a/a2
+<span class="tag">b</span><span class="class">.b1</span>
+<span class="tag">b</span>.b2
+</code></pre><p>若执行<strong>go install c</strong>则将会同时生成pkg目录和bin目录，且可执行文件在bin目录里面。</p>
+<h2 id="3-_总结">3. 总结</h2><p>golang的项目目录组织结构说起来其实就两个细节:<br><strong>import</strong> 的是目录，从GOPATH里面<strong>src目录</strong>开始的目录<br><strong>package</strong> 是给函数调用的。<br>比如<strong>c.go</strong> 里面，<strong>import “a/a1”</strong> 指的是<strong>GOPATH/scr/a/a1</strong> 目录,而<strong>c.go</strong>里面的<strong>a1.PrintA1()</strong> 中的a1是<strong>a1.go</strong> 里面的<strong>packae a1</strong>，比如说:<br>如果 <strong>a1.go</strong> 的路径变成 <strong>a/a11</strong>，<strong>a1.go</strong> 里面改成 <strong>package aaa</strong> ,那么 <strong>c.go</strong> 就变成了：</p>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="built_in">import</span> <span class="params">(</span><br><span class="line">	<span class="string">"a/a11"</span></span><br><span class="line">	<span class="string">"a/a2"</span></span><br><span class="line">	<span class="string">"b"</span></span><br><span class="line">)</span></span><br><span class="line"></span><br><span class="line">func main<span class="params">()</span> &#123;</span><br><span class="line">	aaa.PrintA1<span class="params">()</span></span><br><span class="line">	a2.PrintA2<span class="params">()</span></span><br><span class="line">	b.PrintB<span class="params">()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-_补充(据说不推荐)">4. 补充(据说不推荐)</h2><p>golang的import是可以不依赖GOPATH的，但是据说是不推荐的作法。<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">|<span class="comment">--&lt;a&gt;</span></span><br><span class="line">     |<span class="comment">--a.go</span></span><br><span class="line">|<span class="comment">--main.go</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>a.go:</strong><br><figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">package a</span><br><span class="line"></span><br><span class="line"><span class="built_in">import</span> <span class="params">(</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span></span><br><span class="line"></span><br><span class="line">func PrintA<span class="params">()</span> &#123;</span><br><span class="line">	fmt.Println<span class="params">(<span class="string">"aaa"</span>)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>main.go:</strong><br><figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="built_in">import</span> <span class="params">(</span><br><span class="line">	<span class="string">"./a"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span></span><br><span class="line"></span><br><span class="line">func main<span class="params">()</span> &#123;</span><br><span class="line">	a.PrintA<span class="params">()</span></span><br><span class="line">	fmt.Println<span class="params">(<span class="string">"main"</span>)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>结果：</strong><br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">aaa</span></span><br><span class="line">main</span><br></pre></td></tr></table></figure></p>
@@ -240,139 +262,6 @@
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
 	</div>
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-zybuluo" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/06/zybuluo/" class="article-date">
-  	<time datetime="2015-10-06T11:07:22.000Z" itemprop="datePublished">2015-10-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/06/zybuluo/">zybuluo</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="欢迎使用_Cmd_Markdown_编辑阅读器">欢迎使用 Cmd Markdown 编辑阅读器</h1><hr>
-<p>我们理解您需要更便捷更高效的工具记录思想，整理笔记、知识，并将其中承载的价值传播给他人，<strong>Cmd Markdown</strong> 是我们给出的答案 —— 我们为记录思想和分享知识提供更专业的工具。 您可以使用 Cmd Markdown：</p>
-<blockquote>
-<ul>
-<li>整理知识，学习笔记</li>
-<li>发布日记，杂文，所见所想</li>
-<li>撰写发布技术文稿（代码支持）</li>
-<li>撰写发布学术论文（LaTeX 公式支持）</li>
-</ul>
-</blockquote>
-<p><img src="https://www.zybuluo.com/static/img/logo.png" alt="cmd-markdown-logo"></p>
-<p>除了您现在看到的这个 Cmd Markdown 在线版本，您还可以前往以下网址下载：</p>
-<h3 id="Windows/Mac/Linux_全平台客户端"><a href="https://www.zybuluo.com/cmd/" target="_blank" rel="external">Windows/Mac/Linux 全平台客户端</a></h3><blockquote>
-<p>请保留此份 Cmd Markdown 的欢迎稿兼使用说明，如需撰写新稿件，点击顶部工具栏右侧的 <i class="icon-file"></i> <strong>新文稿</strong> 或者使用快捷键 <code>Ctrl+Alt+N</code>。</p>
-</blockquote>
-<hr>
-<h2 id="什么是_Markdown">什么是 Markdown</h2><p>Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档：譬如您正在阅读的这份文档。它使用简单的符号标记不同的标题，分割不同的段落，<strong>粗体</strong> 或者 <em>斜体</em> 某些文字，更棒的是，它还可以</p>
-<h3 id="1-_制作一份待办事宜_Todo_列表">1. 制作一份待办事宜 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#13-待办事宜-todo-列表" target="_blank" rel="external">Todo 列表</a></h3><ul>
-<li>[ ] 支持以 PDF 格式导出文稿</li>
-<li>[ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率</li>
-<li>[x] 新增 Todo 列表功能</li>
-<li>[x] 修复 LaTex 公式渲染问题</li>
-<li>[x] 新增 LaTex 公式编号功能</li>
-</ul>
-<h3 id="2-_书写一个质能守恒公式[^LaTeX]">2. 书写一个质能守恒公式[^LaTeX]</h3><p>$$E=mc^2$$</p>
-<h3 id="3-_高亮一段代码[^code]">3. 高亮一段代码[^code]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="decorator">@requires_authorization</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># A comment</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'hello world'</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-_高效绘制_流程图">4. 高效绘制 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#7-流程图" target="_blank" rel="external">流程图</a></h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">st=&#62;start: Start&#10;op=&#62;operation: Your Operation&#10;cond=&#62;condition: Yes or No?&#10;e=&#62;end&#10;&#10;st-&#62;op-&#62;cond&#10;cond(yes)-&#62;e&#10;cond(no)-&#62;op</span><br></pre></td></tr></table></figure>
-<h3 id="5-_高效绘制_序列图">5. 高效绘制 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#8-序列图" target="_blank" rel="external">序列图</a></h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Alice-&#62;Bob: Hello Bob, how are you?&#10;Note right of Bob: Bob thinks&#10;Bob--&#62;Alice: I am good thanks!</span><br></pre></td></tr></table></figure>
-<h3 id="6-_绘制表格">6. 绘制表格</h3><table>
-<thead>
-<tr>
-<th>项目</th>
-<th style="text-align:right">价格</th>
-<th style="text-align:center">数量</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>计算机</td>
-<td style="text-align:right">\$1600</td>
-<td style="text-align:center">5</td>
-</tr>
-<tr>
-<td>手机</td>
-<td style="text-align:right">\$12</td>
-<td style="text-align:center">12</td>
-</tr>
-<tr>
-<td>管线</td>
-<td style="text-align:right">\$1</td>
-<td style="text-align:center">234</td>
-</tr>
-</tbody>
-</table>
-<h3 id="7-_更详细语法说明">7. 更详细语法说明</h3><p>想要查看更详细的语法说明，可以参考我们准备的 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown" target="_blank" rel="external">Cmd Markdown 简明语法手册</a>，进阶用户可以参考 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#cmd-markdown-高阶语法手册" target="_blank" rel="external">Cmd Markdown 高阶语法手册</a> 了解更多高级功能。</p>
-<p>总而言之，不同于其它 <em>所见即所得</em> 的编辑器：你只需使用键盘专注于书写文本内容，就可以生成印刷级的排版格式，省却在键盘和工具栏之间来回切换，调整内容和格式的麻烦。<strong>Markdown 在流畅的书写和印刷级的阅读体验之间找到了平衡。</strong> 目前它已经成为世界上最大的技术分享网站 GitHub 和 技术问答网站 StackOverFlow 的御用书写格式。</p>
-<hr>
-<h2 id="什么是_Cmd_Markdown">什么是 Cmd Markdown</h2><p>您可以使用很多工具书写 Markdown，但是 Cmd Markdown 是这个星球上我们已知的、最好的 Markdown 工具——没有之一 ：）因为深信文字的力量，所以我们和你一样，对流畅书写，分享思想和知识，以及阅读体验有极致的追求，我们把对于这些诉求的回应整合在 Cmd Markdown，并且一次，两次，三次，乃至无数次地提升这个工具的体验，最终将它演化成一个 <strong>编辑/发布/阅读</strong> Markdown 的在线平台——您可以在任何地方，任何系统/设备上管理这里的文字。</p>
-<h3 id="1-_实时同步预览">1. 实时同步预览</h3><p>我们将 Cmd Markdown 的主界面一分为二，左边为<strong>编辑区</strong>，右边为<strong>预览区</strong>，在编辑区的操作会实时地渲染到预览区方便查看最终的版面效果，并且如果你在其中一个区拖动滚动条，我们有一个巧妙的算法把另一个区的滚动条同步到等价的位置，超酷！</p>
-<h3 id="2-_编辑工具栏">2. 编辑工具栏</h3><p>也许您还是一个 Markdown 语法的新手，在您完全熟悉它之前，我们在 <strong>编辑区</strong> 的顶部放置了一个如下图所示的工具栏，您可以使用鼠标在工具栏上调整格式，不过我们仍旧鼓励你使用键盘标记格式，提高书写的流畅度。</p>
-<p><img src="https://www.zybuluo.com/static/img/toolbar-editor.png" alt="tool-editor"></p>
-<h3 id="3-_编辑模式">3. 编辑模式</h3><p>完全心无旁骛的方式编辑文字：点击 <strong>编辑工具栏</strong> 最右测的拉伸按钮或者按下 <code>Ctrl + M</code>，将 Cmd Markdown 切换到独立的编辑模式，这是一个极度简洁的写作环境，所有可能会引起分心的元素都已经被挪除，超清爽！</p>
-<h3 id="4-_实时的云端文稿">4. 实时的云端文稿</h3><p>为了保障数据安全，Cmd Markdown 会将您每一次击键的内容保存至云端，同时在 <strong>编辑工具栏</strong> 的最右侧提示 <code>已保存</code> 的字样。无需担心浏览器崩溃，机器掉电或者地震，海啸——在编辑的过程中随时关闭浏览器或者机器，下一次回到 Cmd Markdown 的时候继续写作。</p>
-<h3 id="5-_离线模式">5. 离线模式</h3><p>在网络环境不稳定的情况下记录文字一样很安全！在您写作的时候，如果电脑突然失去网络连接，Cmd Markdown 会智能切换至离线模式，将您后续键入的文字保存在本地，直到网络恢复再将他们传送至云端，即使在网络恢复前关闭浏览器或者电脑，一样没有问题，等到下次开启 Cmd Markdown 的时候，她会提醒您将离线保存的文字传送至云端。简而言之，我们尽最大的努力保障您文字的安全。</p>
-<h3 id="6-_管理工具栏">6. 管理工具栏</h3><p>为了便于管理您的文稿，在 <strong>预览区</strong> 的顶部放置了如下所示的 <strong>管理工具栏</strong>：</p>
-<p><img src="https://www.zybuluo.com/static/img/toolbar-manager.jpg" alt="tool-manager"></p>
-<p>通过管理工具栏可以：</p>
-<p><i class="icon-share"></i> 发布：将当前的文稿生成固定链接，在网络上发布，分享<br><i class="icon-file"></i> 新建：开始撰写一篇新的文稿<br><i class="icon-trash"></i> 删除：删除当前的文稿<br><i class="icon-cloud"></i> 导出：将当前的文稿转化为 Markdown 文本或者 Html 格式，并导出到本地<br><i class="icon-reorder"></i> 列表：所有新增和过往的文稿都可以在这里查看、操作<br><i class="icon-pencil"></i> 模式：切换 普通/Vim/Emacs 编辑模式</p>
-<h3 id="7-_阅读工具栏">7. 阅读工具栏</h3><p><img src="https://www.zybuluo.com/static/img/toolbar-reader.jpg" alt="tool-manager"></p>
-<p>通过 <strong>预览区</strong> 右上角的 <strong>阅读工具栏</strong>，可以查看当前文稿的目录并增强阅读体验。</p>
-<p>工具栏上的五个图标依次为：</p>
-<p><i class="icon-list"></i> 目录：快速导航当前文稿的目录结构以跳转到感兴趣的段落<br><i class="icon-chevron-sign-left"></i> 视图：互换左边编辑区和右边预览区的位置<br><i class="icon-adjust"></i> 主题：内置了黑白两种模式的主题，试试 <strong>黑色主题</strong>，超炫！<br><i class="icon-desktop"></i> 阅读：心无旁骛的阅读模式提供超一流的阅读体验<br><i class="icon-fullscreen"></i> 全屏：简洁，简洁，再简洁，一个完全沉浸式的写作和阅读环境</p>
-<h3 id="8-_阅读模式">8. 阅读模式</h3><p>在 <strong>阅读工具栏</strong> 点击 <i class="icon-desktop"></i> 或者按下 <code>Ctrl+Alt+M</code> 随即进入独立的阅读模式界面，我们在版面渲染上的每一个细节：字体，字号，行间距，前背景色都倾注了大量的时间，努力提升阅读的体验和品质。</p>
-<h3 id="9-_标签、分类和搜索">9. 标签、分类和搜索</h3><p>在编辑区任意行首位置输入以下格式的文字可以标签当前文档：</p>
-<p>标签： 未分类</p>
-<p>标签以后的文稿在【文件列表】（Ctrl+Alt+F）里会按照标签分类，用户可以同时使用键盘或者鼠标浏览查看，或者在【文件列表】的搜索文本框内搜索标题关键字过滤文稿，如下图所示：</p>
-<p><img src="https://www.zybuluo.com/static/img/file-list.png" alt="file-list"></p>
-<h3 id="10-_文稿发布和分享">10. 文稿发布和分享</h3><p>在您使用 Cmd Markdown 记录，创作，整理，阅读文稿的同时，我们不仅希望它是一个有力的工具，更希望您的思想和知识通过这个平台，连同优质的阅读体验，将他们分享给有相同志趣的人，进而鼓励更多的人来到这里记录分享他们的思想和知识，尝试点击 <i class="icon-share"></i> (Ctrl+Alt+P) 发布这份文档给好友吧！</p>
-<hr>
-<p>再一次感谢您花费时间阅读这份欢迎稿，点击 <i class="icon-file"></i> (Ctrl+Alt+N) 开始撰写新的文稿吧！祝您在这里记录、阅读、分享愉快！</p>
-<p>作者 <a href="http://weibo.com/ghosert" target="_blank" rel="external">@ghosert</a><br>2015 年 06月 15日    </p>
-<p>[^LaTeX]: 支持 <strong>LaTeX</strong> 编辑显示支持，例如：$\sum_{i=1}^n a_i=0$， 访问 <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="external">MathJax</a> 参考更多使用方法。</p>
-<p>[^code]: 代码高亮功能支持包括 Java, Python, JavaScript 在内的，<strong>四十一</strong>种主流编程语言。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
       
 
       
@@ -427,65 +316,6 @@
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nothing/">Nothing</a></li></ul>
 	</div>
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/22/hello-world/" class="article-date">
-  	<time datetime="2015-07-22T02:02:32.599Z" itemprop="datePublished">2015-07-22</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/22/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
       
 
       
