@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Intel 8086 内部寄存器 | 淡淡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="因为老是忘记8086 CPU的内部寄存器，在此备忘一下。
+1. 通用寄存器有AX、BX、CX、DC四个通用寄存器，每一个都是16位，但是可以拆成2个8位寄存器使用，分别用AH、AL……来表示。
+当然，4个通用寄存器除了作为通用寄存器使用外，还有各自的习惯用法。
+
+AX(AH AL)又称累加器，常用于存放算术逻辑运算中的操作数，林外所有的I/O指令都使用累加器与外设接口传送数据，有些指令指定只能使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Intel 8086 内部寄存器">
+<meta property="og:url" content="http://yoursite.com/2015/10/09/Intel-8086-内部寄存器/index.html">
+<meta property="og:site_name" content="淡淡">
+<meta property="og:description" content="因为老是忘记8086 CPU的内部寄存器，在此备忘一下。
+1. 通用寄存器有AX、BX、CX、DC四个通用寄存器，每一个都是16位，但是可以拆成2个8位寄存器使用，分别用AH、AL……来表示。
+当然，4个通用寄存器除了作为通用寄存器使用外，还有各自的习惯用法。
+
+AX(AH AL)又称累加器，常用于存放算术逻辑运算中的操作数，林外所有的I/O指令都使用累加器与外设接口传送数据，有些指令指定只能使用">
+<meta property="og:updated_time" content="2015-10-09T11:31:14.525Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Intel 8086 内部寄存器">
+<meta name="twitter:description" content="因为老是忘记8086 CPU的内部寄存器，在此备忘一下。
+1. 通用寄存器有AX、BX、CX、DC四个通用寄存器，每一个都是16位，但是可以拆成2个8位寄存器使用，分别用AH、AL……来表示。
+当然，4个通用寄存器除了作为通用寄存器使用外，还有各自的习惯用法。
+
+AX(AH AL)又称累加器，常用于存放算术逻辑运算中的操作数，林外所有的I/O指令都使用累加器与外设接口传送数据，有些指令指定只能使用">
+  
+    <link rel="alternative" href="/atom.xml" title="淡淡" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/port.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">ZFLiu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Hacker情怀的小学生</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/目录结构/" style="font-size: 10px;">目录结构</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://exsharp.github.io/">暂时只有自己的</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">怎么形容自己呢……</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">ZFLiu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/port.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">ZFLiu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Hacker情怀的小学生</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Intel-8086-内部寄存器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/09/Intel-8086-内部寄存器/" class="article-date">
+  	<time datetime="2015-10-09T10:03:12.000Z" itemprop="datePublished">2015-10-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Intel 8086 内部寄存器
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为老是忘记8086 CPU的内部寄存器，在此备忘一下。</p>
+<h2 id="1-_通用寄存器">1. 通用寄存器</h2><p>有AX、BX、CX、DC四个通用寄存器，每一个都是16位，但是可以拆成2个8位寄存器使用，分别用AH、AL……来表示。</p>
+<p>当然，4个通用寄存器除了作为通用寄存器使用外，还有各自的习惯用法。</p>
+<ul>
+<li><strong>AX(AH AL)</strong>又称<strong>累加器</strong>，常用于存放算术逻辑运算中的操作数，林外所有的I/O指令都使用累加器与外设接口传送数据，有些指令指定只能使用AX(AL)寄存器，如乘法、除法、I/O等指令。</li>
+<li><strong>BX(BH BL)</strong>又称<strong>基址寄存器</strong>，常用来存放访问内存时的基地址或用做间接寻址时的地址寄存器。</li>
+<li><strong>CX(CH CL)</strong>又称<strong>计数寄存器</strong>，在循环和串操作指令中用做计数器，指令执行后CX寄存器中的内容会自动改变。</li>
+<li><strong>DX(DH DL)</strong>又称<strong>数据寄存器</strong>，在I/O指令中用来存放端口的地址，在乘法指令中作为辅助寄存器</li>
+</ul>
+<h2 id="2-_4个专用寄存器">2. 4个专用寄存器</h2><ul>
+<li><strong>SP堆栈指针寄存器</strong>：它用在堆栈中存放栈顶偏移指针，永远指向堆栈的栈顶。</li>
+<li><strong>BP基址指针寄存器</strong>：一般也用来存放访问内存时的基地址。</li>
+<li><strong>SI源变址寄存器、DI目的变址寄存器</strong>：它们常常用在变址寻址方式中。</li>
+</ul>
+<p>每一个专用寄存器也都是16位</p>
+<h2 id="3-_4个段寄存器">3. 4个段寄存器</h2><ul>
+<li><strong>CS代码段寄存器</strong>：存放当前程序所在段的段基址（段首址）。</li>
+<li><strong>DS数据段寄存器</strong>：存放当前程序所在数据段的段基址。</li>
+<li><strong>SS堆栈段寄存器</strong>：存放当前程序所在堆栈段的段基址。</li>
+<li><strong>ES附加段寄存器</strong>：存放当前程序所用辅助数据段的段基址。</li>
+</ul>
+<p>同样，都是16位的</p>
+<h2 id="4-_指令指针寄存器IP">4. 指令指针寄存器IP</h2><p>IP寄存器用于存放下一条执行指令的偏移地址。CPU取指令总是以CS为段基址，以IP为段内偏移地址。当CPU从CS段且偏移地址为（IP）的内存但愿中取出指令代码的一字节后，IP会自动加1，从而指向代码的下一字节，用户不能直接访问IP寄存器。</p>
+<h2 id="5-_标志寄存器FR">5. 标志寄存器FR</h2><p>FR也是16位寄存器，但是只能使用其中的9位，包括6个状态标志位和3个控制标志位。状态标志位记录前面算术逻辑运算结果的特征，控制标志是用户自己通过指令设置的。对其后的操作产生控制作用。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th></th>
+<th>OF</th>
+<th>DF</th>
+<th>IF</th>
+<th>TF</th>
+<th>SF</th>
+<th>ZF</th>
+<th></th>
+<th>AF</th>
+<th></th>
+<th>PF</th>
+<th></th>
+<th>CF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">15</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center"></td>
+<td></td>
+<td>11</td>
+<td>10</td>
+<td>9</td>
+<td>8</td>
+<td>7</td>
+<td>6</td>
+<td></td>
+<td>4</td>
+<td></td>
+<td>2</td>
+<td></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>6个状态标志<ul>
+<li>SF符号标志，和运算结果最高位相同，若SF=1，表示结果是负数；SF=0，表示结果为正数，对于无符号数，SF无意义</li>
+<li>ZF零标志，算术运算的结果为0时，ZF=1，否则ZF=0</li>
+<li>PF奇偶标志，若运算结果的低8位中1的个数为偶数时，PF=1</li>
+<li>CF借进位标志，进行加减法操作时，若最高位有进位，CF=1，循环指令和部分位操作指令也会影响此标志</li>
+<li>AF辅助进借位标志，加减法运算时，如果低半字节向高半字节（第三位向第四位）借进位，则AF=1，一般在BCD码运算中作为是否进行十进制调整的判断依据</li>
+<li>OF溢出标志，当带符号运算过程中结果超出最大范围，OF=1</li>
+</ul>
+</li>
+<li>3个控制标志<ul>
+<li>DF方向标志，串操作指令中，若DF=1则串操作过程中地址值不短减小的方向进行</li>
+<li>IF终端允许标志，若IF=1，则CPU可以响应可屏蔽中断请求</li>
+<li>TF跟踪标志，若TF=1，则CPU处于单步执行指令的工作放式，每执行一条指令，自动产生一次单步终端。</li>
+</ul>
+</li>
+</ul>
+<p>标志位在DEBUG中的显示形式：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">标志名</th>
+<th style="text-align:center">标志为1时</th>
+<th style="text-align:center">标志为0时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">OF[Overflow Flag]</td>
+<td style="text-align:center">ov[OVerflow]</td>
+<td style="text-align:center">nv[Not oVerflow]</td>
+</tr>
+<tr>
+<td style="text-align:center">DF[Direction Flag]</td>
+<td style="text-align:center">dn[DowN]</td>
+<td style="text-align:center">up[UP]</td>
+</tr>
+<tr>
+<td style="text-align:center">IF[Interrupt Flag]</td>
+<td style="text-align:center">ei[Enable I~t]</td>
+<td style="text-align:center">di[Disable I~t]</td>
+</tr>
+<tr>
+<td style="text-align:center">SF[Sign Flag]</td>
+<td style="text-align:center">ng[NeGative sign]</td>
+<td style="text-align:center">pl[PLus sign]</td>
+</tr>
+<tr>
+<td style="text-align:center">ZF[Zero Flag]</td>
+<td style="text-align:center">zr[ZeRo]</td>
+<td style="text-align:center">nz[Not Zero]</td>
+</tr>
+<tr>
+<td style="text-align:center">AF[Auxiliary carry Flag]</td>
+<td style="text-align:center">ac[Auxiliary Carry]</td>
+<td style="text-align:center">na[Not Aux~]</td>
+</tr>
+<tr>
+<td style="text-align:center">PF[Parity Flag]</td>
+<td style="text-align:center">pe[Parity Even]</td>
+<td style="text-align:center">po[Parity Odd]</td>
+</tr>
+<tr>
+<td style="text-align:center">CF[Carry Flag]</td>
+<td style="text-align:center">cy[CarrY]</td>
+<td style="text-align:center">nc[Not Carry]</td>
+</tr>
+</tbody>
+</table>
+<p>OK，完毕~</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/07/Go项目的目录结构/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Go项目的目录结构</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 ZFLiu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

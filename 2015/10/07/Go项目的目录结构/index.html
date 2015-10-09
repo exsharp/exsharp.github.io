@@ -16,7 +16,7 @@
 1. 准备工作首先，需要设置一个环境变量GOPATH，简单地说，import的包都在这个变量里面找，包括go get得到的包也都是安装在这里面。
 一个GOPATH一般有3个子目录">
 <meta property="og:image" content="http://images.cnitblog.com/blog/399175/201306/01122101-aa12538f3b37421999c5f91e2cea199c.jpg">
-<meta property="og:updated_time" content="2015-10-07T11:18:39.930Z">
+<meta property="og:updated_time" content="2015-10-07T15:00:30.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go项目的目录结构">
 <meta name="twitter:description" content="一直搞不懂golang是怎么组织项目目录结构的，后来看了Golang项目目录结构组织总算弄明白一些了。整体来说，golang使用目录+包来管理的，比起python来说确实麻烦一些。具体往后看，本文基于上面的连接进行总结。
@@ -122,7 +122,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a>
+						<a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/目录结构/" style="font-size: 10px;">目录结构</a>
 					</div>
 				</section>
 				
@@ -218,10 +218,14 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/目录结构/">目录结构</a></li></ul>
 	</div>
 
         
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/go/">go</a>
+	</div>
+
 
         <div class="clearfix"></div>
       </div>
@@ -234,7 +238,7 @@
 <p>一个GOPATH一般有3个子目录:</p>
 <pre><code><span class="function"><span class="title">src</span> <span class="params">(存放源码，最重要的)</span>
 <span class="title">pkg</span> <span class="params">(存放编译后的代码)</span>
-<span class="title">bin</span> <span class="params">(存放变异后的可执行文件)</span></span>
+<span class="title">bin</span> <span class="params">(存放编译后的可执行文件)</span></span>
 </code></pre><p>一般来说pkg和bin目录不用我们创建，<strong>go build 或者 go install</strong>的时候就会自己创建了，golang的安装目录就是一个GOPATH，这里我们添加一个路径到GOPATH，这里引用原文的例子<br>首先，创建一个GOPATH变量，如果已有就加在后边，用<strong>;</strong>分开<br><img src="http://images.cnitblog.com/blog/399175/201306/01122101-aa12538f3b37421999c5f91e2cea199c.jpg" alt=""></p>
 <h2 id="2-_新建项目">2. 新建项目</h2><pre><code>&lt;proj&gt;
   |<span class="comment">--&lt;src&gt;</span>
@@ -276,6 +280,15 @@ a/a2
   
     
 <nav id="article-nav">
+  
+    <a href="/2015/10/09/Intel-8086-内部寄存器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Intel 8086 内部寄存器
+        
+      </div>
+    </a>
   
   
     <a href="/2015/10/06/First/" id="article-nav-older" class="article-nav-link-wrap">

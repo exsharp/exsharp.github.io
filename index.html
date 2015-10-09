@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a>
+						<a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/目录结构/" style="font-size: 10px;">目录结构</a>
 					</div>
 				</section>
 				
@@ -186,6 +186,192 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Intel-8086-内部寄存器" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/09/Intel-8086-内部寄存器/" class="article-date">
+  	<time datetime="2015-10-09T10:03:12.000Z" itemprop="datePublished">2015-10-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/09/Intel-8086-内部寄存器/">Intel 8086 内部寄存器</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为老是忘记8086 CPU的内部寄存器，在此备忘一下。</p>
+<h2 id="1-_通用寄存器">1. 通用寄存器</h2><p>有AX、BX、CX、DC四个通用寄存器，每一个都是16位，但是可以拆成2个8位寄存器使用，分别用AH、AL……来表示。</p>
+<p>当然，4个通用寄存器除了作为通用寄存器使用外，还有各自的习惯用法。</p>
+<ul>
+<li><strong>AX(AH AL)</strong>又称<strong>累加器</strong>，常用于存放算术逻辑运算中的操作数，林外所有的I/O指令都使用累加器与外设接口传送数据，有些指令指定只能使用AX(AL)寄存器，如乘法、除法、I/O等指令。</li>
+<li><strong>BX(BH BL)</strong>又称<strong>基址寄存器</strong>，常用来存放访问内存时的基地址或用做间接寻址时的地址寄存器。</li>
+<li><strong>CX(CH CL)</strong>又称<strong>计数寄存器</strong>，在循环和串操作指令中用做计数器，指令执行后CX寄存器中的内容会自动改变。</li>
+<li><strong>DX(DH DL)</strong>又称<strong>数据寄存器</strong>，在I/O指令中用来存放端口的地址，在乘法指令中作为辅助寄存器</li>
+</ul>
+<h2 id="2-_4个专用寄存器">2. 4个专用寄存器</h2><ul>
+<li><strong>SP堆栈指针寄存器</strong>：它用在堆栈中存放栈顶偏移指针，永远指向堆栈的栈顶。</li>
+<li><strong>BP基址指针寄存器</strong>：一般也用来存放访问内存时的基地址。</li>
+<li><strong>SI源变址寄存器、DI目的变址寄存器</strong>：它们常常用在变址寻址方式中。</li>
+</ul>
+<p>每一个专用寄存器也都是16位</p>
+<h2 id="3-_4个段寄存器">3. 4个段寄存器</h2><ul>
+<li><strong>CS代码段寄存器</strong>：存放当前程序所在段的段基址（段首址）。</li>
+<li><strong>DS数据段寄存器</strong>：存放当前程序所在数据段的段基址。</li>
+<li><strong>SS堆栈段寄存器</strong>：存放当前程序所在堆栈段的段基址。</li>
+<li><strong>ES附加段寄存器</strong>：存放当前程序所用辅助数据段的段基址。</li>
+</ul>
+<p>同样，都是16位的</p>
+<h2 id="4-_指令指针寄存器IP">4. 指令指针寄存器IP</h2><p>IP寄存器用于存放下一条执行指令的偏移地址。CPU取指令总是以CS为段基址，以IP为段内偏移地址。当CPU从CS段且偏移地址为（IP）的内存但愿中取出指令代码的一字节后，IP会自动加1，从而指向代码的下一字节，用户不能直接访问IP寄存器。</p>
+<h2 id="5-_标志寄存器FR">5. 标志寄存器FR</h2><p>FR也是16位寄存器，但是只能使用其中的9位，包括6个状态标志位和3个控制标志位。状态标志位记录前面算术逻辑运算结果的特征，控制标志是用户自己通过指令设置的。对其后的操作产生控制作用。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th></th>
+<th>OF</th>
+<th>DF</th>
+<th>IF</th>
+<th>TF</th>
+<th>SF</th>
+<th>ZF</th>
+<th></th>
+<th>AF</th>
+<th></th>
+<th>PF</th>
+<th></th>
+<th>CF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">15</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center"></td>
+<td></td>
+<td>11</td>
+<td>10</td>
+<td>9</td>
+<td>8</td>
+<td>7</td>
+<td>6</td>
+<td></td>
+<td>4</td>
+<td></td>
+<td>2</td>
+<td></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>6个状态标志<ul>
+<li>SF符号标志，和运算结果最高位相同，若SF=1，表示结果是负数；SF=0，表示结果为正数，对于无符号数，SF无意义</li>
+<li>ZF零标志，算术运算的结果为0时，ZF=1，否则ZF=0</li>
+<li>PF奇偶标志，若运算结果的低8位中1的个数为偶数时，PF=1</li>
+<li>CF借进位标志，进行加减法操作时，若最高位有进位，CF=1，循环指令和部分位操作指令也会影响此标志</li>
+<li>AF辅助进借位标志，加减法运算时，如果低半字节向高半字节（第三位向第四位）借进位，则AF=1，一般在BCD码运算中作为是否进行十进制调整的判断依据</li>
+<li>OF溢出标志，当带符号运算过程中结果超出最大范围，OF=1</li>
+</ul>
+</li>
+<li>3个控制标志<ul>
+<li>DF方向标志，串操作指令中，若DF=1则串操作过程中地址值不短减小的方向进行</li>
+<li>IF终端允许标志，若IF=1，则CPU可以响应可屏蔽中断请求</li>
+<li>TF跟踪标志，若TF=1，则CPU处于单步执行指令的工作放式，每执行一条指令，自动产生一次单步终端。</li>
+</ul>
+</li>
+</ul>
+<p>标志位在DEBUG中的显示形式：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">标志名</th>
+<th style="text-align:center">标志为1时</th>
+<th style="text-align:center">标志为0时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">OF[Overflow Flag]</td>
+<td style="text-align:center">ov[OVerflow]</td>
+<td style="text-align:center">nv[Not oVerflow]</td>
+</tr>
+<tr>
+<td style="text-align:center">DF[Direction Flag]</td>
+<td style="text-align:center">dn[DowN]</td>
+<td style="text-align:center">up[UP]</td>
+</tr>
+<tr>
+<td style="text-align:center">IF[Interrupt Flag]</td>
+<td style="text-align:center">ei[Enable I~t]</td>
+<td style="text-align:center">di[Disable I~t]</td>
+</tr>
+<tr>
+<td style="text-align:center">SF[Sign Flag]</td>
+<td style="text-align:center">ng[NeGative sign]</td>
+<td style="text-align:center">pl[PLus sign]</td>
+</tr>
+<tr>
+<td style="text-align:center">ZF[Zero Flag]</td>
+<td style="text-align:center">zr[ZeRo]</td>
+<td style="text-align:center">nz[Not Zero]</td>
+</tr>
+<tr>
+<td style="text-align:center">AF[Auxiliary carry Flag]</td>
+<td style="text-align:center">ac[Auxiliary Carry]</td>
+<td style="text-align:center">na[Not Aux~]</td>
+</tr>
+<tr>
+<td style="text-align:center">PF[Parity Flag]</td>
+<td style="text-align:center">pe[Parity Even]</td>
+<td style="text-align:center">po[Parity Odd]</td>
+</tr>
+<tr>
+<td style="text-align:center">CF[Carry Flag]</td>
+<td style="text-align:center">cy[CarrY]</td>
+<td style="text-align:center">nc[Not Carry]</td>
+</tr>
+</tbody>
+</table>
+<p>OK，完毕~</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Go项目的目录结构" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -217,7 +403,7 @@
 <p>一个GOPATH一般有3个子目录:</p>
 <pre><code><span class="function"><span class="title">src</span> <span class="params">(存放源码，最重要的)</span>
 <span class="title">pkg</span> <span class="params">(存放编译后的代码)</span>
-<span class="title">bin</span> <span class="params">(存放变异后的可执行文件)</span></span>
+<span class="title">bin</span> <span class="params">(存放编译后的可执行文件)</span></span>
 </code></pre><p>一般来说pkg和bin目录不用我们创建，<strong>go build 或者 go install</strong>的时候就会自己创建了，golang的安装目录就是一个GOPATH，这里我们添加一个路径到GOPATH，这里引用原文的例子<br>首先，创建一个GOPATH变量，如果已有就加在后边，用<strong>;</strong>分开<br><img src="http://images.cnitblog.com/blog/399175/201306/01122101-aa12538f3b37421999c5f91e2cea199c.jpg" alt=""></p>
 <h2 id="2-_新建项目">2. 新建项目</h2><pre><code>&lt;proj&gt;
   |<span class="comment">--&lt;src&gt;</span>
@@ -259,10 +445,14 @@ a/a2
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/目录结构/">目录结构</a></li></ul>
 	</div>
 
       
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/golang/">golang</a><a class="article-category-link" href="/categories/golang/go/">go</a>
+	</div>
+
 
       
       <div class="clearfix"></div>
