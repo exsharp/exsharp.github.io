@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/8086/" style="font-size: 10px;">8086</a> <a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/cpu/" style="font-size: 10px;">cpu</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/寄存器/" style="font-size: 10px;">寄存器</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/目录结构/" style="font-size: 10px;">目录结构</a>
+						<a href="/tags/8086/" style="font-size: 10px;">8086</a> <a href="/tags/Nothing/" style="font-size: 10px;">Nothing</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/cpu/" style="font-size: 10px;">cpu</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/寄存器/" style="font-size: 10px;">寄存器</a> <a href="/tags/张氏标定/" style="font-size: 10px;">张氏标定</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/目录结构/" style="font-size: 10px;">目录结构</a> <a href="/tags/相机标定/" style="font-size: 10px;">相机标定</a>
 					</div>
 				</section>
 				
@@ -185,6 +185,81 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-OpenCV-cvCalibrateCamera2函数" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/11/OpenCV-cvCalibrateCamera2函数/" class="article-date">
+  	<time datetime="2015-10-11T14:41:32.000Z" itemprop="datePublished">2015-10-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/11/OpenCV-cvCalibrateCamera2函数/">OpenCV cvCalibrateCamera2函数</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近弄相机标定，然后发现OpenCV中自带的函数cvCalibrateCamera2，它用的是张氏标定的方法，具体过程我也没多懂，但是基本明白，其实它就是几个矩阵neng来neng去。哎……<br>关于cvCalibrateCamera2这个函数，官方的参数是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">cvCalibrateCamera2</span><span class="params">(</span><br><span class="line">	IntPtr object_points, </span><br><span class="line">	IntPtr image_points, </span><br><span class="line">	IntPtr point_counts, </span><br><span class="line">	MCvSize image_size, </span><br><span class="line">	IntPtr intrinsic_matrix, </span><br><span class="line">	IntPtr distortion_coeffs, </span><br><span class="line">	IntPtr rotation_vectors, </span><br><span class="line">	IntPtr translation_vectors, </span><br><span class="line">	<span class="keyword">int</span> flags</span><br><span class="line">)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>其中各个参数的作用：<br><strong>object_points (IntPtr)</strong><br><strong>官方：</strong>The joint matrix of object points, 3xN or Nx3, where N is the total number of points in all views<br><strong>我的：</strong>这个就是张氏标定里面的世界坐标，<strong>3</strong>代表世界坐标的x,y,z。一般都令<strong>z=0</strong>，因为世界坐标是图片中棋盘角点的位置，所以，世界坐标一般都是“算”出来的，从左上角的（0，0）开始，只要知道实际上棋盘格子中每个小格子的宽度，就能得到整个棋盘点的坐标。<strong>N</strong>的话要结合另一个参数point_counts,比如说有10张标定的照片，每张的角点数是20，那么N就是20*10</p>
+<p><strong>image_points (IntPtr)</strong><br><strong>官方：</strong>The joint matrix of corresponding image points, 2xN or Nx2, where N is the total number of points in all views<br><strong>我的：</strong>这个是由计算机得出来的角点坐标集合，就是计算机识别出来的角点的位置，一般先由cvFindChessboardCorners求出大致坐标，再又cvFindCornerSubPix通过迭代来发现具有子像素精度的角点位置。</p>
+<p>前面两个参数其实是对应的，一个世界坐标对应一个图像坐标，如果有多张图片的话，放在同一个矩阵。类似于定义一个queue，然后把第一张图片的角点位置一个一个push进去，然后再第二张图片的角点位置一个一个push进去，一直这样……</p>
+<p><strong>point_counts (IntPtr)</strong><br><strong>官方：</strong>Vector containing numbers of points in each particular view, 1xM or Mx1, where M is the number of a scene views<br><strong>我的：</strong>就是每张照片的角点个数，仅此。</p>
+<p><strong>image_size (MCvSize)</strong><br><strong>官方：</strong>Size of the image, used only to initialize intrinsic camera matrix<br><strong>我的：</strong>相片的实际大小，一般右键查看相片的属性就能获得</p>
+<p><strong>intrinsic_matrix (IntPtr)</strong><br><strong>官方：</strong>The output camera matrix (A) [fx 0 cx; 0 fy cy; 0 0 1]. If CV_CALIB_USE_INTRINSIC_GUESS and/or CV_CALIB_FIX_ASPECT_RATION are specified, some or all of fx, fy, cx, cy must be initialized<br><strong>我的：</strong>获得的相机的内参，就是张氏标定的内参矩阵</p>
+<p><strong>distortion_coeffs (IntPtr)</strong><br><strong>官方：</strong>The output 4x1 or 1x4 vector of distortion coefficients [k1, k2, p1, p2]<br><strong>我的：</strong>就是张氏标定里面的畸变参数</p>
+<p><strong>rotation_vectors (IntPtr)</strong><br><strong>官方：</strong>The output 3xM or Mx3 array of rotation vectors (compact representation of rotation matrices, see cvRodrigues2).<br><strong>我的：</strong>旋转向量，由于一张照片就有一个旋转角度，所以这里的M表示有多少张照片，如果要第3张的参数就是这个矩阵的第三列</p>
+<p><strong>translation_vectors (IntPtr)</strong><br><strong>官方：</strong>The output 3xM or Mx3 array of translation vectors<br><strong>我的：</strong>平移向量，由于一张照片就有一个平移位置，所以这里的M也表示有多少张照片。</p>
+<p><strong>flags (Int32)</strong><br><strong>官方：</strong>Different flags<br><strong>百度百科：</strong><br>不同的标志，可以是0，或者下面值的组合：</p>
+<ul>
+<li><strong>CV_CALIB_USE_INTRINSIC_GUESS</strong> - 内参数矩阵包含fx，fy，cx和cy的初始值。否则，(cx, cy)被初始化到图像中心（这儿用到图像大小），焦距用最小平方差方式计算得到。注意，如果内部参数已知，没有必要使用这个函数，使用cvFindExtrinsicCameraParams2则可。</li>
+<li><strong>CV_CALIB_FIX_PRINCIPAL_POINT</strong> - 主点在全局优化过程中不变，一直在中心位置或者在其他指定的位置（当CV_CALIB_USE_INTRINSIC_GUESS设置的时候）。</li>
+<li><strong>CV_CALIB_FIX_ASPECT_RATIO</strong> - 优化过程中认为fx和fy中只有一个独立变量，保持比例fx/fy不变，fx/fy的值跟内参数矩阵初始化时的值一样。在这种情况下， (fx, fy)的实际初始值或者从输入内存矩阵中读取（当CV_CALIB_USE_INTRINSIC_GUESS被指定时），或者采用估计值（后者情况中fx和fy可能被设置为任意值，只有比值被使用）。</li>
+<li><strong>CV_CALIB_ZERO_TANGENT_DIST</strong> – 切向形变参数(p1, p2)被设置为0，其值在优化过程中保持为0。</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/张氏标定/">张氏标定</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/相机标定/">相机标定</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/OpenCV/">OpenCV</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-Intel-8086-内部寄存器" class="article article-type-post" itemscope itemprop="blogPost">
   
